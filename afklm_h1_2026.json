@@ -1,0 +1,1017 @@
+{
+ "issuer": "Air France-KLM",
+ "currency": "EUR",
+ "unit": "millions",
+ "standard": "IFRS 18, early adopted from 30 June 2026 (comparatives restated)",
+ "status": "Condensed interim consolidated statements, unaudited",
+ "source": {
+  "title": "Air France-KLM condensed interim consolidated financial statements, 30 June 2026",
+  "url": "https://www.airfranceklm.com/sites/default/files/2026-07/2026.06-air-france-klm-consolidated-financial-statements-and-notes-as-of-june-30-2026.pdf"
+ },
+ "periods": {
+  "flow": [
+   "H1 2026",
+   "H1 2025 restated"
+  ],
+  "stock": [
+   "30 Jun 2026",
+   "31 Dec 2025"
+  ]
+ },
+ "income_statement": [
+  {
+   "key": "traffic_sales",
+   "label": "Traffic sales",
+   "cat": "operating",
+   "memo": true,
+   "v": [
+    14943,
+    13942
+   ]
+  },
+  {
+   "key": "other_sales",
+   "label": "Sales, other business",
+   "cat": "operating",
+   "memo": true,
+   "v": [
+    1813,
+    1666
+   ]
+  },
+  {
+   "key": "revenues",
+   "label": "Revenues",
+   "cat": "operating",
+   "v": [
+    16756,
+    15608
+   ]
+  },
+  {
+   "key": "fuel",
+   "label": "Fuel and CO2 quotas",
+   "cat": "operating",
+   "v": [
+    -3887,
+    -3343
+   ]
+  },
+  {
+   "key": "external",
+   "label": "External expenses",
+   "cat": "operating",
+   "v": [
+    -6370,
+    -6265
+   ]
+  },
+  {
+   "key": "salaries",
+   "label": "Salaries and related costs",
+   "cat": "operating",
+   "v": [
+    -5012,
+    -4841
+   ]
+  },
+  {
+   "key": "taxes_other",
+   "label": "Taxes other than income taxes",
+   "cat": "operating",
+   "v": [
+    -107,
+    -102
+   ]
+  },
+  {
+   "key": "capitalized",
+   "label": "Capitalized production and other operating income",
+   "cat": "operating",
+   "v": [
+    704,
+    855
+   ]
+  },
+  {
+   "key": "other_opex",
+   "label": "Other operating expenses",
+   "cat": "operating",
+   "v": [
+    -45,
+    -25
+   ]
+  },
+  {
+   "key": "amortization",
+   "label": "Amortization",
+   "cat": "operating",
+   "v": [
+    -1641,
+    -1564
+   ]
+  },
+  {
+   "key": "provisions",
+   "label": "Reversals (additions) to provisions, leased aircraft return and other",
+   "cat": "operating",
+   "v": [
+    85,
+    107
+   ]
+  },
+  {
+   "key": "fx_operating",
+   "label": "Foreign exchange (operating) gains (losses) after hedges",
+   "cat": "operating",
+   "v": [
+    -146,
+    526
+   ]
+  },
+  {
+   "key": "sales_aircraft",
+   "label": "Sales of aircraft equipment",
+   "cat": "operating",
+   "v": [
+    13,
+    -2
+   ]
+  },
+  {
+   "key": "non_recurring",
+   "label": "Non-recurring income and expenses",
+   "cat": "operating",
+   "v": [
+    -7,
+    -10
+   ]
+  },
+  {
+   "key": "op_profit",
+   "label": "Operating profit or loss",
+   "subtotal": "operating",
+   "v": [
+    343,
+    944
+   ]
+  },
+  {
+   "key": "associates",
+   "label": "Share of profits (losses) of associates",
+   "cat": "investing",
+   "v": [
+    -15,
+    -11
+   ]
+  },
+  {
+   "key": "cash_income",
+   "label": "Income from cash and cash equivalents",
+   "cat": "investing",
+   "v": [
+    102,
+    102
+   ]
+  },
+  {
+   "key": "fx_investing",
+   "label": "FX gains (losses), derivatives and other (investing)",
+   "cat": "investing",
+   "v": [
+    81,
+    -160
+   ]
+  },
+  {
+   "key": "pbfit",
+   "label": "Profit or loss before financing and income taxes",
+   "subtotal": "investing",
+   "v": [
+    511,
+    875
+   ]
+  },
+  {
+   "key": "int_fin",
+   "label": "Interest expenses on financial liabilities",
+   "cat": "financing",
+   "v": [
+    -175,
+    -161
+   ]
+  },
+  {
+   "key": "int_lease",
+   "label": "Interest expenses of lease debt",
+   "cat": "financing",
+   "v": [
+    -169,
+    -159
+   ]
+  },
+  {
+   "key": "undiscount",
+   "label": "Undiscounting of provisions",
+   "cat": "financing",
+   "v": [
+    -174,
+    -173
+   ]
+  },
+  {
+   "key": "fx_financing",
+   "label": "FX gains (losses), derivatives and other (financing)",
+   "cat": "financing",
+   "v": [
+    -51,
+    195
+   ]
+  },
+  {
+   "key": "pbt",
+   "label": "Profit or loss before income tax",
+   "subtotal": "financing",
+   "v": [
+    -58,
+    577
+   ]
+  },
+  {
+   "key": "tax",
+   "label": "Income taxes",
+   "cat": "tax",
+   "v": [
+    -3,
+    -176
+   ]
+  },
+  {
+   "key": "net",
+   "label": "Profit or loss",
+   "subtotal": "tax",
+   "v": [
+    -61,
+    401
+   ]
+  },
+  {
+   "key": "nci",
+   "label": "Net income, non-controlling interests",
+   "cat": "split",
+   "v": [
+    72,
+    87
+   ]
+  },
+  {
+   "key": "group",
+   "label": "Net income, Group part",
+   "cat": "split",
+   "v": [
+    -133,
+    314
+   ]
+  }
+ ],
+ "balance_sheet": [
+  {
+   "key": "goodwill",
+   "label": "Goodwill",
+   "sec": "nca",
+   "v": [
+    224,
+    223
+   ]
+  },
+  {
+   "key": "intangibles",
+   "label": "Intangible assets",
+   "sec": "nca",
+   "v": [
+    1220,
+    1199
+   ]
+  },
+  {
+   "key": "flight",
+   "label": "Flight equipment",
+   "sec": "nca",
+   "v": [
+    14398,
+    13651
+   ]
+  },
+  {
+   "key": "other_ppe",
+   "label": "Other property, plant and equipment",
+   "sec": "nca",
+   "v": [
+    1792,
+    1679
+   ]
+  },
+  {
+   "key": "rou",
+   "label": "Right-of-use assets",
+   "sec": "nca",
+   "v": [
+    9205,
+    9452
+   ]
+  },
+  {
+   "key": "assoc_inv",
+   "label": "Investments in equity associates",
+   "sec": "nca",
+   "v": [
+    235,
+    246
+   ]
+  },
+  {
+   "key": "pension_assets",
+   "label": "Pension assets",
+   "sec": "nca",
+   "v": [
+    68,
+    57
+   ]
+  },
+  {
+   "key": "other_nc_fin",
+   "label": "Other non-current financial assets",
+   "sec": "nca",
+   "v": [
+    1312,
+    1267
+   ]
+  },
+  {
+   "key": "nc_deriv_a",
+   "label": "Non-current derivative financial assets",
+   "sec": "nca",
+   "v": [
+    221,
+    118
+   ]
+  },
+  {
+   "key": "dta",
+   "label": "Deferred tax assets",
+   "sec": "nca",
+   "v": [
+    604,
+    713
+   ]
+  },
+  {
+   "key": "other_nc_assets",
+   "label": "Other non-current assets",
+   "sec": "nca",
+   "v": [
+    396,
+    278
+   ]
+  },
+  {
+   "key": "total_nca",
+   "label": "Total non-current assets",
+   "subtotal": "nca",
+   "v": [
+    29675,
+    28883
+   ]
+  },
+  {
+   "key": "other_c_fin",
+   "label": "Other current financial assets",
+   "sec": "ca",
+   "v": [
+    872,
+    1360
+   ]
+  },
+  {
+   "key": "c_deriv_a",
+   "label": "Current derivative financial assets",
+   "sec": "ca",
+   "v": [
+    684,
+    33
+   ]
+  },
+  {
+   "key": "inventories",
+   "label": "Inventories",
+   "sec": "ca",
+   "v": [
+    1064,
+    992
+   ]
+  },
+  {
+   "key": "trade_rec",
+   "label": "Trade receivables",
+   "sec": "ca",
+   "v": [
+    2783,
+    2216
+   ]
+  },
+  {
+   "key": "other_c_assets",
+   "label": "Other current assets",
+   "sec": "ca",
+   "v": [
+    1407,
+    1224
+   ]
+  },
+  {
+   "key": "cash",
+   "label": "Cash and cash equivalents",
+   "sec": "ca",
+   "v": [
+    5091,
+    4714
+   ]
+  },
+  {
+   "key": "held_sale",
+   "label": "Assets held for sale",
+   "sec": "ca",
+   "v": [
+    31,
+    23
+   ]
+  },
+  {
+   "key": "total_ca",
+   "label": "Total current assets",
+   "subtotal": "ca",
+   "v": [
+    11932,
+    10562
+   ]
+  },
+  {
+   "key": "total_assets",
+   "label": "Total assets",
+   "subtotal": "assets",
+   "v": [
+    41607,
+    39445
+   ]
+  },
+  {
+   "key": "equity",
+   "label": "Equity (Group and non-controlling interests)",
+   "sec": "eq",
+   "v": [
+    2787,
+    2364
+   ]
+  },
+  {
+   "key": "pension_prov",
+   "label": "Pension provisions",
+   "sec": "ncl",
+   "v": [
+    1679,
+    1654
+   ]
+  },
+  {
+   "key": "nc_return",
+   "label": "Non-current return obligation liability",
+   "sec": "ncl",
+   "v": [
+    4837,
+    4554
+   ]
+  },
+  {
+   "key": "other_nc_prov",
+   "label": "Other non-current provision",
+   "sec": "ncl",
+   "v": [
+    352,
+    264
+   ]
+  },
+  {
+   "key": "nc_fin",
+   "label": "Non-current financial liabilities",
+   "sec": "ncl",
+   "v": [
+    7911,
+    7265
+   ]
+  },
+  {
+   "key": "nc_lease",
+   "label": "Non-current lease debt",
+   "sec": "ncl",
+   "v": [
+    5548,
+    5487
+   ]
+  },
+  {
+   "key": "nc_deriv_l",
+   "label": "Non-current derivative financial liabilities",
+   "sec": "ncl",
+   "v": [
+    89,
+    199
+   ]
+  },
+  {
+   "key": "dtl",
+   "label": "Deferred tax liabilities",
+   "sec": "ncl",
+   "v": [
+    1,
+    0
+   ]
+  },
+  {
+   "key": "other_ncl",
+   "label": "Other non-current liabilities",
+   "sec": "ncl",
+   "v": [
+    709,
+    545
+   ]
+  },
+  {
+   "key": "total_ncl",
+   "label": "Total non-current liabilities",
+   "subtotal": "ncl",
+   "v": [
+    21126,
+    19968
+   ]
+  },
+  {
+   "key": "c_return",
+   "label": "Current return obligation liability",
+   "sec": "cl",
+   "v": [
+    258,
+    334
+   ]
+  },
+  {
+   "key": "other_c_prov",
+   "label": "Other current provision",
+   "sec": "cl",
+   "v": [
+    506,
+    808
+   ]
+  },
+  {
+   "key": "c_fin",
+   "label": "Current financial liabilities",
+   "sec": "cl",
+   "v": [
+    937,
+    1803
+   ]
+  },
+  {
+   "key": "c_lease",
+   "label": "Current lease debt",
+   "sec": "cl",
+   "v": [
+    977,
+    958
+   ]
+  },
+  {
+   "key": "c_deriv_l",
+   "label": "Current derivative financial liabilities",
+   "sec": "cl",
+   "v": [
+    92,
+    255
+   ]
+  },
+  {
+   "key": "trade_pay",
+   "label": "Trade payables",
+   "sec": "cl",
+   "v": [
+    3022,
+    2723
+   ]
+  },
+  {
+   "key": "deferred_rev",
+   "label": "Deferred revenue on ticket sales",
+   "sec": "cl",
+   "v": [
+    5838,
+    4264
+   ]
+  },
+  {
+   "key": "ffp",
+   "label": "Frequent flyer programs",
+   "sec": "cl",
+   "v": [
+    927,
+    921
+   ]
+  },
+  {
+   "key": "other_cl",
+   "label": "Other current liabilities",
+   "sec": "cl",
+   "v": [
+    5136,
+    5047
+   ]
+  },
+  {
+   "key": "overdrafts",
+   "label": "Bank overdrafts",
+   "sec": "cl",
+   "v": [
+    1,
+    0
+   ]
+  },
+  {
+   "key": "total_cl",
+   "label": "Total current liabilities",
+   "subtotal": "cl",
+   "v": [
+    17694,
+    17113
+   ]
+  },
+  {
+   "key": "total_liab",
+   "label": "Total liabilities",
+   "subtotal": "liab",
+   "v": [
+    38820,
+    37081
+   ]
+  },
+  {
+   "key": "total_el",
+   "label": "Total equity and liabilities",
+   "subtotal": "el",
+   "v": [
+    41607,
+    39445
+   ]
+  }
+ ],
+ "cash_flow": [
+  {
+   "key": "cf_op_profit",
+   "label": "Operating profit and loss",
+   "cat": "operating",
+   "v": [
+    343,
+    944
+   ]
+  },
+  {
+   "key": "da",
+   "label": "Amortization, depreciation and provisions",
+   "cat": "operating",
+   "v": [
+    1556,
+    1457
+   ]
+  },
+  {
+   "key": "disp",
+   "label": "Result on disposals of tangible and intangible assets",
+   "cat": "operating",
+   "v": [
+    -13,
+    2
+   ]
+  },
+  {
+   "key": "deriv_nc",
+   "label": "Valuation of operating derivatives (non cash)",
+   "cat": "operating",
+   "v": [
+    3,
+    -7
+   ]
+  },
+  {
+   "key": "unreal_fx",
+   "label": "Unrealized operating currency differences",
+   "cat": "operating",
+   "v": [
+    138,
+    -518
+   ]
+  },
+  {
+   "key": "other_nm",
+   "label": "Other non-monetary items",
+   "cat": "operating",
+   "v": [
+    -327,
+    -7
+   ]
+  },
+  {
+   "key": "cur_tax",
+   "label": "Current income taxes",
+   "cat": "operating",
+   "v": [
+    -51,
+    -73
+   ]
+  },
+  {
+   "key": "cf_before_wc",
+   "label": "Cash flow from operating activities before change in working capital",
+   "subtotal": "cfbwc",
+   "v": [
+    1649,
+    1798
+   ]
+  },
+  {
+   "key": "wc",
+   "label": "Increase (decrease) in working capital",
+   "cat": "wc",
+   "v": [
+    969,
+    1297
+   ]
+  },
+  {
+   "key": "cfo",
+   "label": "Cash flow from operating activities",
+   "subtotal": "cfo",
+   "v": [
+    2618,
+    3095
+   ]
+  },
+  {
+   "key": "acq",
+   "label": "Acquisition of subsidiaries and shares",
+   "cat": "investing",
+   "v": [
+    -16,
+    -11
+   ]
+  },
+  {
+   "key": "capex",
+   "label": "Purchase of PP&E and intangible assets",
+   "cat": "investing",
+   "v": [
+    -1910,
+    -2315
+   ]
+  },
+  {
+   "key": "proceeds",
+   "label": "Proceeds on disposal of PP&E and intangible assets",
+   "cat": "investing",
+   "v": [
+    465,
+    573
+   ]
+  },
+  {
+   "key": "int_recv",
+   "label": "Interest received",
+   "cat": "investing",
+   "v": [
+    84,
+    88
+   ]
+  },
+  {
+   "key": "div_recv",
+   "label": "Dividends received",
+   "cat": "investing",
+   "v": [
+    1,
+    9
+   ]
+  },
+  {
+   "key": "net_inv",
+   "label": "Decrease (increase) in net investments, more than 3 months",
+   "cat": "investing",
+   "v": [
+    255,
+    13
+   ]
+  },
+  {
+   "key": "new_loans",
+   "label": "New loans",
+   "cat": "investing",
+   "v": [
+    -105,
+    -146
+   ]
+  },
+  {
+   "key": "repay_loans",
+   "label": "Repayment on loans",
+   "cat": "investing",
+   "v": [
+    356,
+    87
+   ]
+  },
+  {
+   "key": "inv_fx",
+   "label": "Realized investing currency differences",
+   "cat": "investing",
+   "v": [
+    24,
+    -68
+   ]
+  },
+  {
+   "key": "cfi",
+   "label": "Net cash flow used in investing activities",
+   "subtotal": "cfi",
+   "v": [
+    -846,
+    -1770
+   ]
+  },
+  {
+   "key": "treasury",
+   "label": "Payments to acquire treasury shares",
+   "cat": "financing",
+   "v": [
+    -1,
+    -1
+   ]
+  },
+  {
+   "key": "perp_issue",
+   "label": "Issuance of perpetual",
+   "cat": "financing",
+   "v": [
+    0,
+    494
+   ]
+  },
+  {
+   "key": "coupons",
+   "label": "Coupons on perpetual",
+   "cat": "financing",
+   "v": [
+    -55,
+    -65
+   ]
+  },
+  {
+   "key": "debt_issue",
+   "label": "Issuance of debt",
+   "cat": "financing",
+   "v": [
+    1130,
+    314
+   ]
+  },
+  {
+   "key": "debt_repay",
+   "label": "Repayment on debt",
+   "cat": "financing",
+   "v": [
+    -1440,
+    -1152
+   ]
+  },
+  {
+   "key": "lease_pay",
+   "label": "Payments on lease debts",
+   "cat": "financing",
+   "v": [
+    -479,
+    -487
+   ]
+  },
+  {
+   "key": "int_paid",
+   "label": "Interest paid",
+   "cat": "financing",
+   "v": [
+    -469,
+    -418
+   ]
+  },
+  {
+   "key": "div_paid",
+   "label": "Dividends paid",
+   "cat": "financing",
+   "v": [
+    -1,
+    -1
+   ]
+  },
+  {
+   "key": "fin_fx",
+   "label": "Realized financing currency differences",
+   "cat": "financing",
+   "v": [
+    -111,
+    12
+   ]
+  },
+  {
+   "key": "cff",
+   "label": "Net cash flow from financing activities",
+   "subtotal": "cff",
+   "v": [
+    -1426,
+    -1304
+   ]
+  },
+  {
+   "key": "fx_cash",
+   "label": "Effect of exchange rate on cash",
+   "cat": "fxcash",
+   "v": [
+    30,
+    -30
+   ]
+  },
+  {
+   "key": "cash_change",
+   "label": "Change in cash and cash equivalents and bank overdrafts",
+   "subtotal": "change",
+   "v": [
+    376,
+    -9
+   ]
+  }
+ ],
+ "mpm": {
+  "adjusted_ebitda": [
+   2034,
+   1888
+  ],
+  "adjusted_operating_profit": [
+   478,
+   431
+  ],
+  "cost_of_net_debt": [
+   242,
+   218
+  ],
+  "operating_fcf": [
+   1173,
+   1353
+  ],
+  "adjusted_operating_fcf": [
+   309,
+   536
+  ],
+  "recurring_adjusted_operating_fcf": [
+   928,
+   780
+  ],
+  "net_debt": [
+   8376,
+   8392
+  ],
+  "gross_financial_liabilities": [
+   15143,
+   15250
+  ],
+  "net_cash": [
+   6767,
+   6858
+  ],
+  "undrawn_facilities": [
+   3500,
+   null
+  ],
+  "reported_leverage": {
+   "value": 1.6,
+   "basis": "Net debt / adjusted EBITDA, last 12 months",
+   "source": "Q2 2026 press release, 30 July 2026"
+  }
+ },
+ "xbrl": {
+  "available": false,
+  "evidence": "0 embedded files, 0 XBRL markers in the PDF; half-year report, not an ESEF annual report",
+  "checked": "2026-10-14"
+ }
+}

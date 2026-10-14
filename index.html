@@ -1,0 +1,282 @@
+<title>Accounts Lens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one header band, a headline waterfall of the four IFRS 18 categories, then tabbed tables. Numbers in mono, labels in sans. */
+:root{--bg:#f3f5f4;--surface:#ffffff;--ink:#12202b;--muted:#566872;--line:#d8dfe2;--accent:#0b6e6e;--accent-soft:#dcefee;--pos:#1b7f5c;--neg:#b4442a;--warn:#8a6414;--warn-soft:#f4ead2;--neg-soft:#f6dfd8;--pos-soft:#d9efe5;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a20;--surface:#15242c;--ink:#e6eef0;--muted:#92a6ae;--line:#27393f;--accent:#4fc1b8;--accent-soft:#17383b;--pos:#46b68d;--neg:#e0795c;--warn:#e0b45a;--warn-soft:#3a3118;--neg-soft:#40231c;--pos-soft:#173a2d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a20;--surface:#15242c;--ink:#e6eef0;--muted:#92a6ae;--line:#27393f;--accent:#4fc1b8;--accent-soft:#17383b;--pos:#46b68d;--neg:#e0795c;--warn:#e0b45a;--warn-soft:#3a3118;--neg-soft:#40231c;--pos-soft:#173a2d;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);padding-inline:16px;padding-block:20px 40px}
+.wrap{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+h1{font-size:22px;line-height:1.2;margin:0;font-weight:600;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:4px 0 0;max-width:62ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button,.btn,input{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:6px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.panel h2{font-size:13px;margin:0 0 4px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.panel p.hint{margin:0 0 12px;color:var(--muted);max-width:70ch}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.meta div{min-width:0}.meta dt{font-size:12px;color:var(--muted)}.meta dd{margin:0;overflow-wrap:anywhere}
+.meta a{color:var(--accent)}
+nav[role=tablist]{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;cursor:pointer;color:var(--muted);margin-bottom:-1px}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent);font-weight:500}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.grp td{background:var(--bg);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+tr.sub td{font-weight:600;border-top:1px solid var(--ink)}
+tr.memo td:first-child{padding-left:24px;color:var(--muted)}
+.neg{color:var(--neg)}
+.note{display:block;color:var(--muted);font-size:12px;font-weight:400;max-width:58ch}
+.chip{display:inline-flex;gap:4px;align-items:center;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:500}
+.chip.ok{background:var(--pos-soft);color:var(--pos)}.chip.bad{background:var(--neg-soft);color:var(--neg)}.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.ltm{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:12px}
+.ltm input{width:120px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-family:var(--mono)}
+.banner{padding:10px 12px;border-radius:6px;background:var(--warn-soft);color:var(--warn)}
+svg text{fill:var(--ink);font-family:var(--sans)}
+svg .m{fill:var(--muted)}
+.foot{color:var(--muted);font-size:12px;max-width:80ch}
+@media (prefers-reduced-motion:no-preference){.btn{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+<header>
+ <div>
+  <h1 id="title">Accounts Lens</h1>
+  <p class="sub" id="sub"></p>
+ </div>
+ <div class="tools">
+  <label class="btn" for="file">Load another issuer (JSON)</label>
+  <input id="file" type="file" accept=".json,application/json" hidden>
+  <button class="btn" id="reset" type="button">Reset to Air France-KLM</button>
+ </div>
+</header>
+<div id="msg" class="banner" hidden></div>
+
+<section class="panel"><dl class="meta" id="meta"></dl></section>
+
+<section class="panel">
+ <h2>From operating profit to net result</h2>
+ <p class="hint" id="wfhint"></p>
+ <div id="wf"></div>
+</section>
+
+<section class="panel">
+ <nav role="tablist" id="tabs"></nav>
+ <div id="view" style="padding-top:12px"></div>
+</section>
+<p class="foot" id="foot"></p>
+</div>
+
+<script>
+const DEFAULT = {"issuer": "Air France-KLM", "currency": "EUR", "unit": "millions", "standard": "IFRS 18, early adopted from 30 June 2026 (comparatives restated)", "status": "Condensed interim consolidated statements, unaudited", "source": {"title": "Air France-KLM condensed interim consolidated financial statements, 30 June 2026", "url": "https://www.airfranceklm.com/sites/default/files/2026-07/2026.06-air-france-klm-consolidated-financial-statements-and-notes-as-of-june-30-2026.pdf"}, "periods": {"flow": ["H1 2026", "H1 2025 restated"], "stock": ["30 Jun 2026", "31 Dec 2025"]}, "income_statement": [{"key": "traffic_sales", "label": "Traffic sales", "cat": "operating", "memo": true, "v": [14943, 13942]}, {"key": "other_sales", "label": "Sales, other business", "cat": "operating", "memo": true, "v": [1813, 1666]}, {"key": "revenues", "label": "Revenues", "cat": "operating", "v": [16756, 15608]}, {"key": "fuel", "label": "Fuel and CO2 quotas", "cat": "operating", "v": [-3887, -3343]}, {"key": "external", "label": "External expenses", "cat": "operating", "v": [-6370, -6265]}, {"key": "salaries", "label": "Salaries and related costs", "cat": "operating", "v": [-5012, -4841]}, {"key": "taxes_other", "label": "Taxes other than income taxes", "cat": "operating", "v": [-107, -102]}, {"key": "capitalized", "label": "Capitalized production and other operating income", "cat": "operating", "v": [704, 855]}, {"key": "other_opex", "label": "Other operating expenses", "cat": "operating", "v": [-45, -25]}, {"key": "amortization", "label": "Amortization", "cat": "operating", "v": [-1641, -1564]}, {"key": "provisions", "label": "Reversals (additions) to provisions, leased aircraft return and other", "cat": "operating", "v": [85, 107]}, {"key": "fx_operating", "label": "Foreign exchange (operating) gains (losses) after hedges", "cat": "operating", "v": [-146, 526]}, {"key": "sales_aircraft", "label": "Sales of aircraft equipment", "cat": "operating", "v": [13, -2]}, {"key": "non_recurring", "label": "Non-recurring income and expenses", "cat": "operating", "v": [-7, -10]}, {"key": "op_profit", "label": "Operating profit or loss", "subtotal": "operating", "v": [343, 944]}, {"key": "associates", "label": "Share of profits (losses) of associates", "cat": "investing", "v": [-15, -11]}, {"key": "cash_income", "label": "Income from cash and cash equivalents", "cat": "investing", "v": [102, 102]}, {"key": "fx_investing", "label": "FX gains (losses), derivatives and other (investing)", "cat": "investing", "v": [81, -160]}, {"key": "pbfit", "label": "Profit or loss before financing and income taxes", "subtotal": "investing", "v": [511, 875]}, {"key": "int_fin", "label": "Interest expenses on financial liabilities", "cat": "financing", "v": [-175, -161]}, {"key": "int_lease", "label": "Interest expenses of lease debt", "cat": "financing", "v": [-169, -159]}, {"key": "undiscount", "label": "Undiscounting of provisions", "cat": "financing", "v": [-174, -173]}, {"key": "fx_financing", "label": "FX gains (losses), derivatives and other (financing)", "cat": "financing", "v": [-51, 195]}, {"key": "pbt", "label": "Profit or loss before income tax", "subtotal": "financing", "v": [-58, 577]}, {"key": "tax", "label": "Income taxes", "cat": "tax", "v": [-3, -176]}, {"key": "net", "label": "Profit or loss", "subtotal": "tax", "v": [-61, 401]}, {"key": "nci", "label": "Net income, non-controlling interests", "cat": "split", "v": [72, 87]}, {"key": "group", "label": "Net income, Group part", "cat": "split", "v": [-133, 314]}], "balance_sheet": [{"key": "goodwill", "label": "Goodwill", "sec": "nca", "v": [224, 223]}, {"key": "intangibles", "label": "Intangible assets", "sec": "nca", "v": [1220, 1199]}, {"key": "flight", "label": "Flight equipment", "sec": "nca", "v": [14398, 13651]}, {"key": "other_ppe", "label": "Other property, plant and equipment", "sec": "nca", "v": [1792, 1679]}, {"key": "rou", "label": "Right-of-use assets", "sec": "nca", "v": [9205, 9452]}, {"key": "assoc_inv", "label": "Investments in equity associates", "sec": "nca", "v": [235, 246]}, {"key": "pension_assets", "label": "Pension assets", "sec": "nca", "v": [68, 57]}, {"key": "other_nc_fin", "label": "Other non-current financial assets", "sec": "nca", "v": [1312, 1267]}, {"key": "nc_deriv_a", "label": "Non-current derivative financial assets", "sec": "nca", "v": [221, 118]}, {"key": "dta", "label": "Deferred tax assets", "sec": "nca", "v": [604, 713]}, {"key": "other_nc_assets", "label": "Other non-current assets", "sec": "nca", "v": [396, 278]}, {"key": "total_nca", "label": "Total non-current assets", "subtotal": "nca", "v": [29675, 28883]}, {"key": "other_c_fin", "label": "Other current financial assets", "sec": "ca", "v": [872, 1360]}, {"key": "c_deriv_a", "label": "Current derivative financial assets", "sec": "ca", "v": [684, 33]}, {"key": "inventories", "label": "Inventories", "sec": "ca", "v": [1064, 992]}, {"key": "trade_rec", "label": "Trade receivables", "sec": "ca", "v": [2783, 2216]}, {"key": "other_c_assets", "label": "Other current assets", "sec": "ca", "v": [1407, 1224]}, {"key": "cash", "label": "Cash and cash equivalents", "sec": "ca", "v": [5091, 4714]}, {"key": "held_sale", "label": "Assets held for sale", "sec": "ca", "v": [31, 23]}, {"key": "total_ca", "label": "Total current assets", "subtotal": "ca", "v": [11932, 10562]}, {"key": "total_assets", "label": "Total assets", "subtotal": "assets", "v": [41607, 39445]}, {"key": "equity", "label": "Equity (Group and non-controlling interests)", "sec": "eq", "v": [2787, 2364]}, {"key": "pension_prov", "label": "Pension provisions", "sec": "ncl", "v": [1679, 1654]}, {"key": "nc_return", "label": "Non-current return obligation liability", "sec": "ncl", "v": [4837, 4554]}, {"key": "other_nc_prov", "label": "Other non-current provision", "sec": "ncl", "v": [352, 264]}, {"key": "nc_fin", "label": "Non-current financial liabilities", "sec": "ncl", "v": [7911, 7265]}, {"key": "nc_lease", "label": "Non-current lease debt", "sec": "ncl", "v": [5548, 5487]}, {"key": "nc_deriv_l", "label": "Non-current derivative financial liabilities", "sec": "ncl", "v": [89, 199]}, {"key": "dtl", "label": "Deferred tax liabilities", "sec": "ncl", "v": [1, 0]}, {"key": "other_ncl", "label": "Other non-current liabilities", "sec": "ncl", "v": [709, 545]}, {"key": "total_ncl", "label": "Total non-current liabilities", "subtotal": "ncl", "v": [21126, 19968]}, {"key": "c_return", "label": "Current return obligation liability", "sec": "cl", "v": [258, 334]}, {"key": "other_c_prov", "label": "Other current provision", "sec": "cl", "v": [506, 808]}, {"key": "c_fin", "label": "Current financial liabilities", "sec": "cl", "v": [937, 1803]}, {"key": "c_lease", "label": "Current lease debt", "sec": "cl", "v": [977, 958]}, {"key": "c_deriv_l", "label": "Current derivative financial liabilities", "sec": "cl", "v": [92, 255]}, {"key": "trade_pay", "label": "Trade payables", "sec": "cl", "v": [3022, 2723]}, {"key": "deferred_rev", "label": "Deferred revenue on ticket sales", "sec": "cl", "v": [5838, 4264]}, {"key": "ffp", "label": "Frequent flyer programs", "sec": "cl", "v": [927, 921]}, {"key": "other_cl", "label": "Other current liabilities", "sec": "cl", "v": [5136, 5047]}, {"key": "overdrafts", "label": "Bank overdrafts", "sec": "cl", "v": [1, 0]}, {"key": "total_cl", "label": "Total current liabilities", "subtotal": "cl", "v": [17694, 17113]}, {"key": "total_liab", "label": "Total liabilities", "subtotal": "liab", "v": [38820, 37081]}, {"key": "total_el", "label": "Total equity and liabilities", "subtotal": "el", "v": [41607, 39445]}], "cash_flow": [{"key": "cf_op_profit", "label": "Operating profit and loss", "cat": "operating", "v": [343, 944]}, {"key": "da", "label": "Amortization, depreciation and provisions", "cat": "operating", "v": [1556, 1457]}, {"key": "disp", "label": "Result on disposals of tangible and intangible assets", "cat": "operating", "v": [-13, 2]}, {"key": "deriv_nc", "label": "Valuation of operating derivatives (non cash)", "cat": "operating", "v": [3, -7]}, {"key": "unreal_fx", "label": "Unrealized operating currency differences", "cat": "operating", "v": [138, -518]}, {"key": "other_nm", "label": "Other non-monetary items", "cat": "operating", "v": [-327, -7]}, {"key": "cur_tax", "label": "Current income taxes", "cat": "operating", "v": [-51, -73]}, {"key": "cf_before_wc", "label": "Cash flow from operating activities before change in working capital", "subtotal": "cfbwc", "v": [1649, 1798]}, {"key": "wc", "label": "Increase (decrease) in working capital", "cat": "wc", "v": [969, 1297]}, {"key": "cfo", "label": "Cash flow from operating activities", "subtotal": "cfo", "v": [2618, 3095]}, {"key": "acq", "label": "Acquisition of subsidiaries and shares", "cat": "investing", "v": [-16, -11]}, {"key": "capex", "label": "Purchase of PP&E and intangible assets", "cat": "investing", "v": [-1910, -2315]}, {"key": "proceeds", "label": "Proceeds on disposal of PP&E and intangible assets", "cat": "investing", "v": [465, 573]}, {"key": "int_recv", "label": "Interest received", "cat": "investing", "v": [84, 88]}, {"key": "div_recv", "label": "Dividends received", "cat": "investing", "v": [1, 9]}, {"key": "net_inv", "label": "Decrease (increase) in net investments, more than 3 months", "cat": "investing", "v": [255, 13]}, {"key": "new_loans", "label": "New loans", "cat": "investing", "v": [-105, -146]}, {"key": "repay_loans", "label": "Repayment on loans", "cat": "investing", "v": [356, 87]}, {"key": "inv_fx", "label": "Realized investing currency differences", "cat": "investing", "v": [24, -68]}, {"key": "cfi", "label": "Net cash flow used in investing activities", "subtotal": "cfi", "v": [-846, -1770]}, {"key": "treasury", "label": "Payments to acquire treasury shares", "cat": "financing", "v": [-1, -1]}, {"key": "perp_issue", "label": "Issuance of perpetual", "cat": "financing", "v": [0, 494]}, {"key": "coupons", "label": "Coupons on perpetual", "cat": "financing", "v": [-55, -65]}, {"key": "debt_issue", "label": "Issuance of debt", "cat": "financing", "v": [1130, 314]}, {"key": "debt_repay", "label": "Repayment on debt", "cat": "financing", "v": [-1440, -1152]}, {"key": "lease_pay", "label": "Payments on lease debts", "cat": "financing", "v": [-479, -487]}, {"key": "int_paid", "label": "Interest paid", "cat": "financing", "v": [-469, -418]}, {"key": "div_paid", "label": "Dividends paid", "cat": "financing", "v": [-1, -1]}, {"key": "fin_fx", "label": "Realized financing currency differences", "cat": "financing", "v": [-111, 12]}, {"key": "cff", "label": "Net cash flow from financing activities", "subtotal": "cff", "v": [-1426, -1304]}, {"key": "fx_cash", "label": "Effect of exchange rate on cash", "cat": "fxcash", "v": [30, -30]}, {"key": "cash_change", "label": "Change in cash and cash equivalents and bank overdrafts", "subtotal": "change", "v": [376, -9]}], "mpm": {"adjusted_ebitda": [2034, 1888], "adjusted_operating_profit": [478, 431], "cost_of_net_debt": [242, 218], "operating_fcf": [1173, 1353], "adjusted_operating_fcf": [309, 536], "recurring_adjusted_operating_fcf": [928, 780], "net_debt": [8376, 8392], "gross_financial_liabilities": [15143, 15250], "net_cash": [6767, 6858], "undrawn_facilities": [3500, null], "reported_leverage": {"value": 1.6, "basis": "Net debt / adjusted EBITDA, last 12 months", "source": "Q2 2026 press release, 30 July 2026"}}, "xbrl": {"available": false, "evidence": "0 embedded files, 0 XBRL markers in the PDF; half-year report, not an ESEF annual report", "checked": "2026-10-14"}};
+let D = DEFAULT, ltm = null, tab = "ratios";
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const num = v => v == null ? "–" : (v < 0 ? "(" + Math.abs(v).toLocaleString("en-GB") + ")" : v.toLocaleString("en-GB"));
+const FMT = {
+  pct: v => v == null ? "–" : (v * 100).toFixed(1) + "%",
+  x:   v => v == null ? "–" : v.toFixed(2) + "x",
+  eur: v => num(v == null ? null : Math.round(v))
+};
+
+/* ---------- lookups ---------- */
+const SECS = ["income_statement", "balance_sheet", "cash_flow"];
+function val(key, i) {
+  for (const s of SECS) { const r = (D[s] || []).find(r => r.key === key); if (r) return r.v[i]; }
+  const m = D.mpm && D.mpm[key]; return Array.isArray(m) ? m[i] : null;
+}
+const ok = (...a) => a.every(x => x != null && !Number.isNaN(x));
+const div = (a, b) => ok(a, b) && b !== 0 ? a / b : null;
+
+/* ---------- credit ratios ----------
+   i = 0 current period, 1 comparative. Flow items use the half-year; stock items use the
+   balance sheet date shown in the header. stock:true marks ratios whose comparative uses 31 Dec 2025. */
+const RATIOS = [
+ {g:"Profitability"},
+ {id:"growth", name:"Revenue growth", f:"Revenues / prior-year revenues − 1", fmt:"pct", fn:i => i === 0 ? div(val("revenues",0), val("revenues",1)) - 1 : null},
+ {id:"opm", name:"Operating margin", f:"Operating profit / revenues", fmt:"pct", fn:i => div(val("op_profit",i), val("revenues",i))},
+ {id:"aopm", name:"Adjusted operating margin", f:"Adjusted operating profit (MPM) / revenues", fmt:"pct", fn:i => div(val("adjusted_operating_profit",i), val("revenues",i))},
+ {id:"aem", name:"Adjusted EBITDA margin", f:"Adjusted EBITDA (MPM) / revenues", fmt:"pct", fn:i => div(val("adjusted_ebitda",i), val("revenues",i))},
+ {id:"nm", name:"Net margin", f:"Profit or loss / revenues", fmt:"pct", fn:i => div(val("net",i), val("revenues",i))},
+ {g:"Coverage"},
+ {id:"icr", name:"Interest cover (adjusted EBITDA)", f:"Adjusted EBITDA / cost of net debt", fmt:"x", fn:i => div(val("adjusted_ebitda",i), val("cost_of_net_debt",i)), note:"Half-year figure. The bank covenants test the ratio above 2.5 on a 12-month basis (Note 27)."},
+ {id:"ocov", name:"Operating profit cover", f:"Operating profit / cost of net debt", fmt:"x", fn:i => div(val("op_profit",i), val("cost_of_net_debt",i)), note:"Cost of net debt = cash income less interest on financial and lease debt (Note 6.3)."},
+ {g:"Leverage"},
+ {id:"lev", name:"Net debt / adjusted EBITDA", f:"Net debt / (adjusted EBITDA × 2, or the LTM figure entered above)", fmt:"x", cur:true,
+   fn:i => i === 0 ? div(val("net_debt",0), ltm != null ? ltm : (val("adjusted_ebitda",0) == null ? null : val("adjusted_ebitda",0) * 2)) : null,
+   note:"Doubling a half-year EBITDA ignores seasonality. Enter the last-12-month figure above for a like-for-like leverage."},
+ {id:"nde", name:"Net debt / equity", f:"Net debt / total equity", fmt:"x", stock:true, fn:i => div(val("net_debt",i), val("equity",i))},
+ {id:"lease", name:"Lease debt share of gross debt", f:"Lease debt / (financial liabilities + lease debt)", fmt:"pct", stock:true,
+   fn:i => { const l = (val("nc_lease",i) ?? NaN) + (val("c_lease",i) ?? NaN), f = (val("nc_fin",i) ?? NaN) + (val("c_fin",i) ?? NaN); return div(l, l + f); }},
+ {id:"eqr", name:"Equity / total assets", f:"Total equity / total assets", fmt:"pct", stock:true, fn:i => div(val("equity",i), val("total_assets",i))},
+ {g:"Liquidity"},
+ {id:"cur", name:"Current ratio", f:"Current assets / current liabilities", fmt:"x", stock:true, fn:i => div(val("total_ca",i), val("total_cl",i)), note:"Airlines run low current ratios because ticket sales are collected in advance."},
+ {id:"stc", name:"Short-term debt cover", f:"Net cash (Note 6.3) / (current financial liabilities + current lease debt)", fmt:"x", stock:true, fn:i => div(val("net_cash",i), (val("c_fin",i) ?? NaN) + (val("c_lease",i) ?? NaN))},
+ {id:"liq", name:"Liquidity incl. undrawn lines (EUR m)", f:"Net cash + undrawn committed facilities", fmt:"eur", cur:true, fn:i => i === 0 && ok(val("net_cash",0), val("undrawn_facilities",0)) ? val("net_cash",0) + val("undrawn_facilities",0) : null},
+ {g:"Cash flow"},
+ {id:"ofm", name:"Operating free cash flow margin", f:"Operating free cash flow (Note 6.2) / revenues", fmt:"pct", fn:i => div(val("operating_fcf",i), val("revenues",i))},
+ {id:"ffo", name:"FFO / net debt (half-year, not annualised)", f:"(Cash flow before working capital + interest paid + interest received) / net debt", fmt:"pct", cur:true,
+   fn:i => i === 0 ? div((val("cf_before_wc",0) ?? NaN) + (val("int_paid",0) ?? NaN) + (val("int_recv",0) ?? NaN), val("net_debt",0)) : null,
+   note:"Interest paid is already negative in the cash flow statement."},
+ {id:"cxd", name:"Capex / depreciation and amortization", f:"Purchase of PP&E and intangibles / amortization, depreciation and provisions", fmt:"x", fn:i => div(val("capex",i) == null ? null : -val("capex",i), val("da",i))}
+];
+
+/* ---------- integrity checks ---------- */
+function sum(rows, pred, i) { return rows.filter(pred).reduce((a, r) => a + r.v[i], 0); }
+function integrity() {
+  const out = [], is = D.income_statement || [], bs = D.balance_sheet || [], cf = D.cash_flow || [];
+  const add = (name, got, want) => out.push({name, got, want, pass: got === want});
+  const P = D.periods || {flow:["Current","Comparative"], stock:["Current","Comparative"]};
+  const g = (arr, k, i) => (arr.find(r => r.key === k) || {v:[null,null]}).v[i];
+  [0,1].forEach(i => {
+    const L = P.flow[i];
+    if (is.length) {
+      add(`Operating lines sum to operating profit, ${L}`, sum(is, r => r.cat === "operating" && !r.memo, i), g(is,"op_profit",i));
+      add(`Operating profit + investing = profit before financing and tax, ${L}`, g(is,"op_profit",i) + sum(is, r => r.cat === "investing", i), g(is,"pbfit",i));
+      add(`Profit before financing and tax + financing = profit before tax, ${L}`, g(is,"pbfit",i) + sum(is, r => r.cat === "financing", i), g(is,"pbt",i));
+      add(`Profit before tax + income taxes = profit or loss, ${L}`, g(is,"pbt",i) + g(is,"tax",i), g(is,"net",i));
+      add(`Group part + non-controlling interests = profit or loss, ${L}`, g(is,"group",i) + g(is,"nci",i), g(is,"net",i));
+    }
+    if (cf.length) {
+      add(`Operating lines sum to cash flow before working capital, ${L}`, sum(cf, r => r.cat === "operating", i), g(cf,"cf_before_wc",i));
+      add(`Investing lines sum to net investing cash flow, ${L}`, sum(cf, r => r.cat === "investing", i), g(cf,"cfi",i));
+      add(`Financing lines sum to net financing cash flow, ${L}`, sum(cf, r => r.cat === "financing", i), g(cf,"cff",i));
+      add(`Operating + investing + financing + FX = change in cash, ${L}`, g(cf,"cfo",i) + g(cf,"cfi",i) + g(cf,"cff",i) + g(cf,"fx_cash",i), g(cf,"cash_change",i));
+    }
+    if (is.length && cf.length) add(`Cash flow starts from the income-statement operating profit, ${L}`, g(cf,"cf_op_profit",i), g(is,"op_profit",i));
+  });
+  [0,1].forEach(i => {
+    const L = P.stock[i];
+    if (!bs.length) return;
+    add(`Non-current assets add up, ${L}`, sum(bs, r => r.sec === "nca", i), g(bs,"total_nca",i));
+    add(`Current assets add up, ${L}`, sum(bs, r => r.sec === "ca", i), g(bs,"total_ca",i));
+    add(`Non-current liabilities add up, ${L}`, sum(bs, r => r.sec === "ncl", i), g(bs,"total_ncl",i));
+    add(`Current liabilities add up, ${L}`, sum(bs, r => r.sec === "cl", i), g(bs,"total_cl",i));
+    add(`Assets = liabilities + equity, ${L}`, g(bs,"total_assets",i), g(bs,"total_ncl",i) + g(bs,"total_cl",i) + g(bs,"equity",i));
+  });
+  if (D.mpm && D.mpm.net_debt && D.mpm.gross_financial_liabilities && D.mpm.net_cash)
+    [0,1].forEach(i => add(`Net debt = gross financial liabilities − net cash, ${(P.stock||[])[i]}`, D.mpm.gross_financial_liabilities[i] - D.mpm.net_cash[i], D.mpm.net_debt[i]));
+  return out;
+}
+
+/* ---------- rendering ---------- */
+const cell = (v, fmt) => { const t = FMT[fmt](v); return `<td class="n${v != null && v < 0 && fmt !== "pct" && fmt !== "x" ? " neg" : ""}">${t}</td>`; };
+
+function renderRatios() {
+  const P = D.periods, rep = D.mpm && D.mpm.reported_leverage;
+  let h = `<div class="ltm"><label for="ltm">Last-12-month adjusted EBITDA (EUR m)</label><input id="ltm" inputmode="numeric" placeholder="optional" value="${ltm ?? ""}">
+  ${rep ? `<span class="note" style="max-width:none">Reported by the issuer: ${rep.value.toFixed(1)}x (${esc(rep.basis)}; ${esc(rep.source)}). The 12-month EBITDA is not in the half-year statements.</span>` : ""}</div>
+  <div class="scroll"><table><thead><tr><th>Ratio</th><th class="n">${esc(P.flow[0])}</th><th class="n">${esc(P.flow[1])}</th><th>Definition</th></tr></thead><tbody>`;
+  for (const r of RATIOS) {
+    if (r.g) { h += `<tr class="grp"><td colspan="4">${r.g}</td></tr>`; continue; }
+    const a = r.fn(0), b = r.fn(1);
+    h += `<tr><td>${esc(r.name)}${r.stock ? " †" : ""}</td>${cell(a, r.fmt)}${cell(b, r.fmt)}<td>${esc(r.f)}${r.note ? `<span class="note">${esc(r.note)}</span>` : ""}</td></tr>`;
+  }
+  return h + `</tbody></table></div><p class="foot">† Balance-sheet ratio: the current column uses ${esc(P.stock[0])}, the comparative column uses ${esc(P.stock[1])}. A dash means the inputs are not in the filing or the ratio has no like-for-like comparative.</p>`;
+}
+
+function renderStatement(sec, cols, groups) {
+  const rows = D[sec] || [];
+  if (!rows.length) return `<p class="hint">This dataset has no ${sec.replace("_"," ")}.</p>`;
+  let h = `<div class="scroll"><table><thead><tr><th>Line item</th>${cols.map(c => `<th class="n">${esc(c)}</th>`).join("")}<th class="n">Change</th></tr></thead><tbody>`, last = null;
+  for (const r of rows) {
+    const k = r.cat || r.sec || r.subtotal;
+    if (!r.subtotal && groups[k] && groups[k] !== last) { last = groups[k]; h += `<tr class="grp"><td colspan="4">${esc(last)}</td></tr>`; }
+    const d = r.v[0] != null && r.v[1] != null ? r.v[0] - r.v[1] : null;
+    h += `<tr class="${r.subtotal ? "sub" : ""}${r.memo ? " memo" : ""}"><td>${esc(r.label)}</td>${cell(r.v[0],"eur")}${cell(r.v[1],"eur")}${cell(d,"eur")}</tr>`;
+  }
+  return h + "</tbody></table></div>";
+}
+
+function renderChecks() {
+  const c = integrity(), bad = c.filter(x => !x.pass).length;
+  let h = `<p class="hint">${bad ? `<span class="chip bad">${bad} failed</span> Re-check the extraction for these lines.` : `<span class="chip ok">All ${c.length} passed</span> Subtotals recompute from the lines above.`}</p><div class="scroll"><table><thead><tr><th>Check</th><th class="n">Computed</th><th class="n">Reported</th><th>Result</th></tr></thead><tbody>`;
+  for (const x of c) h += `<tr><td>${esc(x.name)}</td><td class="n">${num(x.got)}</td><td class="n">${num(x.want)}</td><td><span class="chip ${x.pass ? "ok" : "bad"}">${x.pass ? "✓ Pass" : "✗ Fail"}</span></td></tr>`;
+  return h + "</tbody></table></div>";
+}
+
+const TABS = [
+ ["ratios","Credit ratios"], ["is","Income statement"], ["bs","Balance sheet"], ["cf","Cash flow"], ["checks","Checks"]
+];
+function renderView() {
+  const P = D.periods;
+  $("tabs").innerHTML = TABS.map(([k,l]) => `<button role="tab" type="button" data-k="${k}" aria-selected="${k===tab}">${l}</button>`).join("");
+  $("view").innerHTML = ({
+    ratios: renderRatios,
+    is: () => renderStatement("income_statement", P.flow, {operating:"Operating", investing:"Investing", financing:"Financing", tax:"Income taxes", split:"Attribution"}),
+    bs: () => renderStatement("balance_sheet", P.stock, {nca:"Non-current assets", ca:"Current assets", eq:"Equity", ncl:"Non-current liabilities", cl:"Current liabilities"}),
+    cf: () => renderStatement("cash_flow", P.flow, {operating:"Operating", wc:"Working capital", investing:"Investing", financing:"Financing", fxcash:"Exchange effect"}),
+    checks: renderChecks
+  })[tab]();
+  const inp = $("ltm");
+  if (inp) inp.addEventListener("change", () => { const n = parseFloat(inp.value.replace(/[ ,]/g, "")); ltm = Number.isFinite(n) && n > 0 ? n : null; renderView(); $("ltm").focus(); });
+}
+
+function renderWaterfall() {
+  const g = k => (D.income_statement.find(r => r.key === k) || {v:[null]}).v[0];
+  const steps = [["Operating", g("op_profit")], ["Investing", g("pbfit") - g("op_profit")], ["Financing", g("pbt") - g("pbfit")], ["Income taxes", g("tax")]];
+  if (steps.some(s => !ok(s[1])) || !ok(g("net"))) { $("wf").innerHTML = '<p class="hint">Needs operating profit, the three subtotals, taxes and profit or loss.</p>'; return; }
+  const bars = []; let run = 0;
+  steps.forEach(([l, v]) => { bars.push({l, v, a: run, b: run + v}); run += v; });
+  bars.push({l:"Profit or loss", v:g("net"), a:0, b:g("net"), total:true});
+  const lo = Math.min(0, ...bars.flatMap(b => [b.a, b.b])), hi = Math.max(0, ...bars.flatMap(b => [b.a, b.b]));
+  const W = 640, H = 250, L = 8, R = 8, T = 28, B = 36, bw = 64, gap = (W - L - R - bw * 5) / 4;
+  const y = v => T + (hi - v) / (hi - lo || 1) * (H - T - B);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Waterfall from operating profit through investing, financing and taxes to profit or loss" style="width:100%;height:auto;max-width:100%">`;
+  s += `<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)" stroke-width="1"/>`;
+  bars.forEach((b, i) => {
+    const x = L + i * (bw + gap), top = y(Math.max(b.a, b.b)), h = Math.max(2, Math.abs(y(b.a) - y(b.b)));
+    const fill = b.total ? "var(--accent)" : (b.v >= 0 ? "var(--pos)" : "var(--neg)");
+    s += `<rect x="${x}" y="${top}" width="${bw}" height="${h}" rx="3" fill="${fill}"/>`;
+    const lab = (b.v > 0 && !b.total ? "+" : "") + num(b.v);
+    const above = b.v >= 0;
+    s += `<text x="${x + bw/2}" y="${above ? top - 6 : top + h + 14}" text-anchor="middle" font-size="12" style="font-family:var(--mono)">${lab}</text>`;
+    s += `<text x="${x + bw/2}" y="${H - 12}" text-anchor="middle" font-size="12" class="m" style="fill:var(--muted)">${esc(b.l)}</text>`;
+    if (i < 4) s += `<line x1="${x + bw}" x2="${x + bw + gap}" y1="${y(b.b)}" y2="${y(b.b)}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>`;
+  });
+  $("wf").innerHTML = s + "</svg>";
+  $("wfhint").textContent = `${D.periods.flow[0]}, EUR millions. IFRS 18 splits every result into operating, investing and financing, then taxes.`;
+}
+
+function renderHeader() {
+  $("sub").textContent = `Company accounts and standard credit ratios under IFRS 18. Showing ${D.issuer}.`;
+  const s = D.source;
+  $("meta").innerHTML = [
+    ["Issuer", D.issuer], ["Basis", D.standard || "IFRS 18"], ["Status", D.status || "–"], ["Unit", `${D.currency} ${D.unit}`],
+    ["XBRL", D.xbrl ? (D.xbrl.available ? "Available in this file. " : "Not available in this file. ") + D.xbrl.evidence : "Not checked"],
+    ["Source", s ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>` : "–"]
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${k === "Source" ? v : esc(v)}</dd></div>`).join("");
+  $("foot").textContent = "Figures are transcribed from the issuer's own filing. Ratios and the waterfall are computed in this page; adjusted EBITDA, adjusted operating profit, net debt and operating free cash flow are the issuer's management-defined measures, taken as reported.";
+}
+
+function render() { renderHeader(); renderWaterfall(); renderView(); }
+
+$("tabs").addEventListener("click", e => { const b = e.target.closest("button[data-k]"); if (b) { tab = b.dataset.k; renderView(); } });
+$("reset").addEventListener("click", () => { D = DEFAULT; ltm = null; $("msg").hidden = true; render(); });
+$("file").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const j = JSON.parse(rd.result);
+      if (!j.income_statement || !j.income_statement.length) throw new Error("no income_statement array");
+      j.periods = j.periods || {flow:["Current","Comparative"], stock:["Current","Comparative"]};
+      j.balance_sheet = j.balance_sheet || []; j.cash_flow = j.cash_flow || []; j.mpm = j.mpm || {};
+      D = j; ltm = null; $("msg").hidden = true; render();
+    } catch (err) { $("msg").hidden = false; $("msg").textContent = "Could not read that file: " + err.message + ". Use the JSON written by extract_ifrs18.py."; }
+  };
+  rd.readAsText(f); e.target.value = "";
+});
+render();
+</script>
