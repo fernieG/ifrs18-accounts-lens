@@ -10,22 +10,24 @@ Test case: **Air France-KLM**, condensed interim consolidated financial statemen
 
 | Path | Purpose |
 |---|---|
-| `app/template.html` | The UI: statements, 17 credit ratios, waterfall, integrity checks, JSON import. No dependencies beyond two Google Fonts. |
-| `build.py` | Inlines a dataset into the template and writes `docs/index.html` (serve with GitHub Pages). |
-| `data/afklm_h1_2026.json` | Air France-KLM dataset: income statement, balance sheet, cash flow, management-defined measures. |
-| `extractor/extract_ifrs18.py` | PDF or text to JSON for the income statement and key measures. |
-| `tests/` | Dataset integrity tests and an extractor regression test. |
+| `template.html` | The UI: statements, 17 credit ratios, waterfall, integrity checks, JSON import. No dependencies beyond two Google Fonts. |
+| `build.py` | Inlines a dataset into the template and writes `index.html` (serve with GitHub Pages). |
+| `afklm_h1_2026.json` | Air France-KLM dataset: income statement, balance sheet, cash flow, management-defined measures. |
+| `extract_ifrs18.py` | PDF or text to JSON for the income statement and key measures. |
+| `test_all.py` and `fixture_afklm_income_statement.txt` | Dataset integrity tests and an extractor regression test. |
 
 ## Use
 
 ```bash
-python3 build.py                                   # writes docs/index.html
-python3 -m unittest discover -s tests              # run the tests
-python3 extractor/extract_ifrs18.py report.pdf -o out.json --issuer "Name"
-python3 build.py out.json docs/other.html          # UI for another issuer
+python3 build.py                                   # writes index.html
+python3 -m unittest discover -v              # run the tests
+python3 extract_ifrs18.py report.pdf -o out.json --issuer "Name"
+python3 build.py out.json other.html          # UI for another issuer
 ```
 
 The extractor needs poppler's `pdftotext`, or `pip install pypdf` as a fallback. In the UI, "Load another issuer (JSON)" accepts the same format.
+
+GitHub Pages: choose **Deploy from a branch**, select **main**, and serve from **/(root)**. The published page is `index.html`. Run the tests and rebuild the HTML before committing changes to the dataset or template.
 
 ## Ratios
 
@@ -41,10 +43,10 @@ Planned: read inline XBRL directly from annual reports once issuers file under I
 
 ## Status and limits
 
-- The extractor covers the income statement and four key measures. It reproduces the Air France-KLM reference dataset exactly from the real PDF (28 of 28 lines, all subtotal checks pass). Balance sheet and cash flow are not extracted yet; they come from the reference dataset.
+- The extractor covers the income statement and four key measures. Its regression fixture covers 28 Air France-KLM income-statement lines, and the sample data passes subtotal checks. Automated tests do not independently validate extraction from the original PDF. Balance sheet and cash flow are not extracted yet; they come from the reference dataset.
 - Label matching is tuned to Air France-KLM's wording. Other issuers need new patterns in the `IS` table; unmatched lines are listed, never guessed.
 - The source PDF is not committed (`*.pdf` is ignored). Download it from the issuer's investor site.
-- No licence file is included: choose one before making the repository public.
+- Released under the MIT License (see `LICENSE`).
 
 ## Sources
 
